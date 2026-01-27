@@ -1,22 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
-  Phone,
-  Mail,
-  MapPin,
-  Clock,
   Star,
   CheckCircle,
-  Menu,
-  X,
   Smile,
   Shield,
   Award,
   Heart,
   ChevronRight,
 } from "lucide-react";
-import { useState } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -33,32 +27,34 @@ const staggerContainer = {
 };
 
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const services = [
-    {
-      title: "Traditional Braces",
-      description:
-        "Time-tested metal braces that deliver reliable, precise results for all ages.",
-      icon: Shield,
-    },
     {
       title: "Invisalign",
       description:
         "Clear, removable aligners that straighten your teeth discreetly and comfortably.",
       icon: Smile,
+      href: "/treatments/clear-aligners/invisalign",
     },
     {
-      title: "Ceramic Braces",
+      title: "Metal Braces",
+      description:
+        "Time-tested braces that deliver reliable, precise results for all ages.",
+      icon: Shield,
+      href: "/treatments/braces/metal-braces",
+    },
+    {
+      title: "Clear Braces",
       description:
         "Tooth-colored brackets that blend naturally with your smile during treatment.",
       icon: Award,
+      href: "/treatments/braces/clear-braces",
     },
     {
-      title: "Retainers",
+      title: "Angel Aligner",
       description:
-        "Custom-fitted retainers to maintain your beautiful new smile for years to come.",
+        "Premium clear aligners offering excellent results at a more affordable price.",
       icon: Heart,
+      href: "/treatments/clear-aligners/angel-aligner",
     },
   ];
 
@@ -90,120 +86,9 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#fdfbf9]">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#fdfbf9]/95 backdrop-blur-sm shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-3"
-            >
-              <Smile className="h-9 w-9 text-[#1a4d3e]" />
-              <span className="text-2xl font-semibold text-[#1a4d3e] font-[family-name:var(--font-cormorant)]">
-                Lora Ortho
-              </span>
-            </motion.div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
-              <a
-                href="#services"
-                className="text-[#1a4d3e]/80 hover:text-[#1a4d3e] transition-colors font-light"
-              >
-                Services
-              </a>
-              <a
-                href="#about"
-                className="text-[#1a4d3e]/80 hover:text-[#1a4d3e] transition-colors font-light"
-              >
-                About
-              </a>
-              <a
-                href="#testimonials"
-                className="text-[#1a4d3e]/80 hover:text-[#1a4d3e] transition-colors font-light"
-              >
-                Testimonials
-              </a>
-              <a
-                href="#contact"
-                className="text-[#1a4d3e]/80 hover:text-[#1a4d3e] transition-colors font-light"
-              >
-                Contact
-              </a>
-              <a
-                href="#contact"
-                className="bg-[#c9707d] text-white px-6 py-2.5 rounded-full hover:bg-[#b85c69] transition-colors font-medium"
-              >
-                Book Now
-              </a>
-            </div>
-
-            {/* Mobile menu button */}
-            <button
-              className="md:hidden p-2 text-[#1a4d3e]"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="md:hidden bg-[#fdfbf9] border-t border-[#1a4d3e]/10"
-          >
-            <div className="px-4 py-4 space-y-3">
-              <a
-                href="#services"
-                className="block text-[#1a4d3e]/80 hover:text-[#1a4d3e]"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Services
-              </a>
-              <a
-                href="#about"
-                className="block text-[#1a4d3e]/80 hover:text-[#1a4d3e]"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About
-              </a>
-              <a
-                href="#testimonials"
-                className="block text-[#1a4d3e]/80 hover:text-[#1a4d3e]"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Testimonials
-              </a>
-              <a
-                href="#contact"
-                className="block text-[#1a4d3e]/80 hover:text-[#1a4d3e]"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Contact
-              </a>
-              <a
-                href="#contact"
-                className="block bg-[#c9707d] text-white px-5 py-2 rounded-full text-center hover:bg-[#b85c69]"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Book Now
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </nav>
-
+    <>
       {/* Hero Section */}
-      <section className="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-[#f5eeeb] via-[#fdfbf9] to-[#e8f5e9]">
+      <section className="pt-32 pb-16 md:pt-44 md:pb-24 bg-gradient-to-br from-[#f5eeeb] via-[#fdfbf9] to-[#e8f5e9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -221,19 +106,19 @@ export default function Home() {
                 personalized care to give you the confident smile you deserve.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <a
-                  href="#contact"
+                <Link
+                  href="/book-consultation"
                   className="inline-flex items-center justify-center gap-2 bg-[#c9707d] text-white px-8 py-3.5 rounded-full text-lg font-medium hover:bg-[#b85c69] transition-colors shadow-lg shadow-[#c9707d]/25"
                 >
                   Schedule Consultation
                   <ChevronRight className="h-5 w-5" />
-                </a>
-                <a
-                  href="#services"
+                </Link>
+                <Link
+                  href="/treatments"
                   className="inline-flex items-center justify-center gap-2 border-2 border-[#1a4d3e] text-[#1a4d3e] px-8 py-3.5 rounded-full text-lg font-medium hover:bg-[#1a4d3e] hover:text-white transition-colors"
                 >
-                  Our Services
-                </a>
+                  Our Treatments
+                </Link>
               </div>
               <div className="mt-12 flex items-center gap-8">
                 <div>
@@ -287,7 +172,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-24 bg-white">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="initial"
@@ -300,7 +185,7 @@ export default function Home() {
               variants={fadeInUp}
               className="text-[#c9707d] font-medium mb-3 tracking-wide"
             >
-              OUR SERVICES
+              OUR TREATMENTS
             </motion.p>
             <motion.h2
               variants={fadeInUp}
@@ -337,15 +222,32 @@ export default function Home() {
                 <h3 className="text-xl font-semibold text-[#1a4d3e] mb-3 font-[family-name:var(--font-cormorant)]">
                   {service.title}
                 </h3>
-                <p className="text-[#1a4d3e]/70 font-light">{service.description}</p>
+                <p className="text-[#1a4d3e]/70 font-light mb-4">{service.description}</p>
+                <Link
+                  href={service.href}
+                  className="inline-flex items-center gap-1 text-[#c9707d] font-medium hover:text-[#b85c69] transition-colors"
+                >
+                  Learn More
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
               </motion.div>
             ))}
           </motion.div>
+
+          <div className="text-center mt-12">
+            <Link
+              href="/treatments"
+              className="inline-flex items-center gap-2 text-[#1a4d3e] font-medium hover:text-[#c9707d] transition-colors"
+            >
+              View All Treatments
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 bg-[#f5eeeb]">
+      <section className="py-24 bg-[#f5eeeb]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -387,13 +289,22 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+              <div className="mt-8">
+                <Link
+                  href="/about-us"
+                  className="inline-flex items-center gap-2 text-[#c9707d] font-medium hover:text-[#b85c69] transition-colors"
+                >
+                  Learn More About Us
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-24 bg-white">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="initial"
@@ -441,6 +352,16 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
+
+          <div className="text-center mt-12">
+            <Link
+              href="/success-stories/testimonials"
+              className="inline-flex items-center gap-2 text-[#1a4d3e] font-medium hover:text-[#c9707d] transition-colors"
+            >
+              Read More Testimonials
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -460,248 +381,73 @@ export default function Home() {
               Schedule your free consultation today and take the first step
               toward the confident smile you&apos;ve always wanted.
             </p>
-            <a
-              href="#contact"
+            <Link
+              href="/book-consultation"
               className="inline-flex items-center gap-2 bg-[#c9707d] text-white px-10 py-4 rounded-full text-lg font-medium hover:bg-[#b85c69] transition-colors shadow-lg shadow-[#c9707d]/30"
             >
               Book Your Free Consultation
               <ChevronRight className="h-5 w-5" />
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-24 bg-[#f5eeeb]">
+      {/* Locations Preview */}
+      <section className="py-24 bg-[#f5eeeb]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <p className="text-[#c9707d] font-medium mb-3 tracking-wide">CONTACT US</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-[#1a4d3e] mb-6 font-[family-name:var(--font-cormorant)]">
-                Get in Touch
-              </h2>
-              <p className="text-[#1a4d3e]/70 mb-10 font-light text-lg">
-                Have questions or ready to schedule your appointment? We&apos;re
-                here to help!
-              </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-[#c9707d] font-medium mb-3 tracking-wide">LOCATIONS</p>
+            <h2 className="text-3xl md:text-4xl font-semibold text-[#1a4d3e] font-[family-name:var(--font-cormorant)]">
+              Two Convenient Locations
+            </h2>
+          </motion.div>
 
-              <div className="space-y-8">
-                <div className="flex items-start gap-5">
-                  <div className="w-14 h-14 bg-[#1a4d3e]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <MapPin className="h-6 w-6 text-[#1a4d3e]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1a4d3e] mb-1">Location</p>
-                    <p className="text-[#1a4d3e]/70 font-light">
-                      123 Smile Street, Suite 100
-                      <br />
-                      Los Angeles, CA 90001
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-5">
-                  <div className="w-14 h-14 bg-[#1a4d3e]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Phone className="h-6 w-6 text-[#1a4d3e]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1a4d3e] mb-1">Phone</p>
-                    <p className="text-[#1a4d3e]/70 font-light">(555) 123-4567</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-5">
-                  <div className="w-14 h-14 bg-[#1a4d3e]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Mail className="h-6 w-6 text-[#1a4d3e]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1a4d3e] mb-1">Email</p>
-                    <p className="text-[#1a4d3e]/70 font-light">hello@loraortho.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-5">
-                  <div className="w-14 h-14 bg-[#1a4d3e]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Clock className="h-6 w-6 text-[#1a4d3e]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#1a4d3e] mb-1">Hours</p>
-                    <p className="text-[#1a4d3e]/70 font-light">
-                      Mon - Fri: 8:00 AM - 6:00 PM
-                      <br />
-                      Sat: 9:00 AM - 2:00 PM
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <form className="bg-white rounded-3xl p-10 shadow-sm border border-[#1a4d3e]/5">
-                <h3 className="text-2xl font-semibold text-[#1a4d3e] mb-8 font-[family-name:var(--font-cormorant)]">
-                  Request an Appointment
-                </h3>
-                <div className="space-y-5">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-[#1a4d3e] mb-2"
-                    >
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="w-full px-5 py-3.5 border border-[#1a4d3e]/20 rounded-xl focus:ring-2 focus:ring-[#c9707d] focus:border-transparent outline-none transition-all bg-[#fdfbf9]"
-                      placeholder="John Doe"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-[#1a4d3e] mb-2"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full px-5 py-3.5 border border-[#1a4d3e]/20 rounded-xl focus:ring-2 focus:ring-[#c9707d] focus:border-transparent outline-none transition-all bg-[#fdfbf9]"
-                      placeholder="john@example.com"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="phone"
-                      className="block text-sm font-medium text-[#1a4d3e] mb-2"
-                    >
-                      Phone
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      className="w-full px-5 py-3.5 border border-[#1a4d3e]/20 rounded-xl focus:ring-2 focus:ring-[#c9707d] focus:border-transparent outline-none transition-all bg-[#fdfbf9]"
-                      placeholder="(555) 123-4567"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="service"
-                      className="block text-sm font-medium text-[#1a4d3e] mb-2"
-                    >
-                      Service Interested In
-                    </label>
-                    <select
-                      id="service"
-                      className="w-full px-5 py-3.5 border border-[#1a4d3e]/20 rounded-xl focus:ring-2 focus:ring-[#c9707d] focus:border-transparent outline-none transition-all bg-[#fdfbf9]"
-                    >
-                      <option value="">Select a service</option>
-                      <option value="braces">Traditional Braces</option>
-                      <option value="invisalign">Invisalign</option>
-                      <option value="ceramic">Ceramic Braces</option>
-                      <option value="retainers">Retainers</option>
-                      <option value="consultation">General Consultation</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-[#1a4d3e] mb-2"
-                    >
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      className="w-full px-5 py-3.5 border border-[#1a4d3e]/20 rounded-xl focus:ring-2 focus:ring-[#c9707d] focus:border-transparent outline-none transition-all resize-none bg-[#fdfbf9]"
-                      placeholder="Tell us about your smile goals..."
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-[#c9707d] text-white py-4 rounded-xl font-medium hover:bg-[#b85c69] transition-colors shadow-lg shadow-[#c9707d]/25"
-                  >
-                    Submit Request
-                  </button>
-                </div>
-              </form>
-            </motion.div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              {
+                name: "Oxford",
+                address: "123 High Street, Oxford, OX1 4AB",
+                phone: "01865 248816",
+                href: "/contact/oxford",
+              },
+              {
+                name: "Leigh-on-Sea",
+                address: "45 Broadway, Leigh-on-Sea, SS9 1PE",
+                phone: "01702 476789",
+                href: "/contact/leigh-on-sea",
+              },
+            ].map((location, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Link
+                  href={location.href}
+                  className="block bg-white rounded-2xl p-8 hover:shadow-xl transition-shadow"
+                >
+                  <h3 className="text-2xl font-semibold text-[#1a4d3e] mb-2 font-[family-name:var(--font-cormorant)]">
+                    {location.name}
+                  </h3>
+                  <p className="text-[#1a4d3e]/70 mb-2">{location.address}</p>
+                  <p className="text-[#c9707d] font-medium">{location.phone}</p>
+                  <span className="inline-flex items-center gap-1 text-[#1a4d3e] font-medium mt-4">
+                    Get Directions
+                    <ChevronRight className="h-4 w-4" />
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-[#1a4d3e] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-10">
-            <div>
-              <div className="flex items-center gap-3 mb-5">
-                <Smile className="h-9 w-9 text-[#c9707d]" />
-                <span className="text-2xl font-semibold font-[family-name:var(--font-cormorant)]">Lora Ortho</span>
-              </div>
-              <p className="text-white/60 text-sm font-light leading-relaxed">
-                Creating beautiful smiles and confident patients since 2009.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-5 font-[family-name:var(--font-cormorant)] text-lg">Quick Links</h4>
-              <ul className="space-y-3 text-white/60 text-sm font-light">
-                <li>
-                  <a href="#services" className="hover:text-[#c9707d] transition-colors">
-                    Services
-                  </a>
-                </li>
-                <li>
-                  <a href="#about" className="hover:text-[#c9707d] transition-colors">
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#testimonials" className="hover:text-[#c9707d] transition-colors">
-                    Testimonials
-                  </a>
-                </li>
-                <li>
-                  <a href="#contact" className="hover:text-[#c9707d] transition-colors">
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-5 font-[family-name:var(--font-cormorant)] text-lg">Services</h4>
-              <ul className="space-y-3 text-white/60 text-sm font-light">
-                <li>Traditional Braces</li>
-                <li>Invisalign</li>
-                <li>Ceramic Braces</li>
-                <li>Retainers</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-5 font-[family-name:var(--font-cormorant)] text-lg">Contact</h4>
-              <ul className="space-y-3 text-white/60 text-sm font-light">
-                <li>123 Smile Street, Suite 100</li>
-                <li>Los Angeles, CA 90001</li>
-                <li>(555) 123-4567</li>
-                <li>hello@loraortho.com</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-white/10 mt-12 pt-8 text-center text-white/50 text-sm font-light">
-            <p>&copy; {new Date().getFullYear()} Lora Ortho. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 }
