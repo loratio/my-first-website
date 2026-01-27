@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Smile, Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
@@ -7,10 +8,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-10">
           <div>
-            <Link href="/" className="flex items-center gap-3 mb-5">
-              <Smile className="h-9 w-9 text-[#c9707d]" />
-              <span className="text-2xl font-semibold font-[family-name:var(--font-cormorant)]">Lora Ortho</span>
-            </Link>
+            <div className="mb-5">
+              <Logo variant="light" size="md" />
+            </div>
             <p className="text-white/60 text-sm font-light leading-relaxed">
               Creating beautiful smiles and confident patients since 2009.
             </p>

@@ -3,7 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Menu, X, Smile, ChevronDown } from "lucide-react";
+import { Phone, Menu, X, ChevronDown } from "lucide-react";
+import Logo from "./Logo";
 
 interface NavItem {
   label: string;
@@ -127,14 +128,8 @@ export default function Header() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
           >
-            <Link href="/" className="flex items-center gap-3">
-              <Smile className="h-9 w-9 text-[#1a4d3e]" />
-              <span className="text-2xl font-semibold text-[#1a4d3e] font-[family-name:var(--font-cormorant)]">
-                Lora Ortho
-              </span>
-            </Link>
+            <Logo size="md" />
           </motion.div>
 
           {/* Desktop Navigation */}
