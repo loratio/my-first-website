@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
-  --foreground: #1f2937;
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
-  --primary-dark: #1d4ed8;
-  --accent: #f59e0b;
-  --accent-light: #fbbf24;
-  --accent-dark: #d97706;
+  --background: #ffffff;
+  --foreground: #192845;
+  --primary: #192845;
+  --primary-light: #2a3d5c;
+  --primary-dark: #0f1a2e;
+  --secondary: #bce1eb;
+  --secondary-light: #d4eef5;
+  --secondary-dark: #9ad0de;
   --surface: #ffffff;
-  --text: #1f2937;
-  --text-muted: #6b7280;
+  --text: #192845;
+  --text-muted: #5a6a7a;
 }
 
 @theme inline {
@@ -20,24 +20,25 @@
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
   --color-primary-dark: var(--primary-dark);
-  --color-accent: var(--accent);
-  --color-accent-light: var(--accent-light);
-  --color-accent-dark: var(--accent-dark);
+  --color-secondary: var(--secondary);
+  --color-secondary-light: var(--secondary-light);
+  --color-secondary-dark: var(--secondary-dark);
   --color-surface: var(--surface);
   --color-text: var(--text);
   --color-text-muted: var(--text-muted);
-  --font-heading: var(--font-cormorant);
-  --font-body: var(--font-lato);
+  --font-heading: var(--font-outfit);
+  --font-body: var(--font-outfit);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), "Lato", sans-serif;
+  font-family: var(--font-body), "Outfit", sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading), "Cormorant Garamond", serif;
+  font-family: var(--font-heading), "Outfit", sans-serif;
+  font-weight: 700;
 }
 
 html {
@@ -50,7 +51,7 @@ input[type="range"] {
   appearance: none;
   width: 100%;
   height: 8px;
-  background: #e5e7eb;
+  background: var(--secondary);
   border-radius: 4px;
   outline: none;
 }
@@ -68,7 +69,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 0 0 4px rgba(25, 40, 69, 0.2);
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -87,5 +88,5 @@ input[type="range"]::-moz-range-thumb {
 
 .selection-ring:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(25, 40, 69, 0.15);
 }

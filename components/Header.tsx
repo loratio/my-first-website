@@ -10,27 +10,27 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-secondary/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            <Logo size="md" />
+            <Logo variant="dark" size="md" />
           </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             <Link
               href="/"
-              className="text-gray-600 hover:text-primary transition-colors font-light"
+              className="text-primary/70 hover:text-primary transition-colors font-medium"
             >
               Home
             </Link>
             <Link
               href="/brief"
-              className="bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary-dark transition-colors font-medium"
+              className="bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary-light transition-colors font-medium"
             >
               Start Brief
             </Link>
@@ -39,7 +39,7 @@ export default function Header() {
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button
-              className="p-2 text-gray-600"
+              className="p-2 text-primary"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
@@ -59,19 +59,19 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
+            className="md:hidden bg-white border-t border-secondary/50 overflow-hidden"
           >
             <div className="px-4 py-4 space-y-3">
               <Link
                 href="/"
-                className="block py-2 text-gray-600 hover:text-primary"
+                className="block py-2 text-primary/70 hover:text-primary font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/brief"
-                className="block bg-primary text-white px-5 py-3 rounded-full text-center hover:bg-primary-dark"
+                className="block bg-primary text-white px-5 py-3 rounded-full text-center hover:bg-primary-light font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Start Brief

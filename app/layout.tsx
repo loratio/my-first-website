@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Lato } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const lato = Lato({
-  variable: "--font-lato",
-  subsets: ["latin"],
-  weight: ["300", "400", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "tio Website LookBook | Design Brief Wizard",
+  title: "tio | Website LookBook",
   description: "Discover your website's visual identity through an interactive design brief experience. Select styles, colors, and define your brand personality.",
 };
 
@@ -28,9 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body
-        className={`${cormorant.variable} ${lato.variable} antialiased`}
-      >
+      <body className={`${outfit.variable} antialiased font-[family-name:var(--font-outfit)]`}>
         <Header />
         <main className="min-h-screen bg-background pt-16">
           {children}

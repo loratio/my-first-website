@@ -49,10 +49,10 @@ export default function StepIndicator({ steps, currentStep, onStepClick }: StepI
                 animate={{
                   scale: isCurrent ? 1.1 : 1,
                   backgroundColor: isCompleted
-                    ? "#2563eb"
+                    ? "#192845"
                     : isCurrent
-                    ? "#2563eb"
-                    : "#e5e7eb",
+                    ? "#192845"
+                    : "#bce1eb",
                 }}
                 className={`w-10 h-10 rounded-full flex items-center justify-center relative z-10 transition-colors ${
                   isCompleted || isCurrent ? "text-white" : "text-gray-400"
