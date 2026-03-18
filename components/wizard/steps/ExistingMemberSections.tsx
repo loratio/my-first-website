@@ -41,7 +41,7 @@ export default function ExistingMemberSections({ data, updateData }: ExistingMem
     <div>
       <div className="mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-          Site Refresh Details
+          Site refresh details
         </h2>
         <p className="text-text-muted">
           Since we&apos;ve worked together before, let&apos;s find out what&apos;s changed and what you&apos;d like to improve.
@@ -51,7 +51,7 @@ export default function ExistingMemberSections({ data, updateData }: ExistingMem
       <div className="space-y-6">
         {/* SECTION EXIST-1: What's Changed? */}
         <div className="p-5 bg-secondary/10 rounded-xl space-y-5">
-          <h3 className="font-semibold text-primary">What&apos;s Changed?</h3>
+          <h3 className="font-semibold text-primary">What&apos;s changed?</h3>
 
           <FormField
             label="Have any of the following changed since your current site went live?"
@@ -81,7 +81,7 @@ export default function ExistingMemberSections({ data, updateData }: ExistingMem
 
         {/* SECTION EXIST-2: Site Feedback & Improvement Targets */}
         <div className="p-5 bg-secondary/10 rounded-xl space-y-5">
-          <h3 className="font-semibold text-primary">Site Feedback &amp; Improvements</h3>
+          <h3 className="font-semibold text-primary">Site feedback &amp; improvements</h3>
 
           <FormField label="What do you like about your current website?">
             <TextArea
@@ -113,7 +113,7 @@ export default function ExistingMemberSections({ data, updateData }: ExistingMem
 
         {/* SECTION EXIST-3: Visual Direction */}
         <div className="p-5 bg-secondary/10 rounded-xl space-y-5">
-          <h3 className="font-semibold text-primary">Visual Direction</h3>
+          <h3 className="font-semibold text-primary">Visual direction</h3>
 
           <FormField label="Visual direction preference" required>
             <RadioGroup

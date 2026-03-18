@@ -13,32 +13,32 @@ interface ColorExplorationProps {
 const palettes = [
   {
     id: "ocean",
-    name: "Ocean Depths",
+    name: "Ocean depths",
     colors: ["#0077B6", "#00B4D8", "#90E0EF", "#CAF0F8", "#03045E"],
   },
   {
     id: "forest",
-    name: "Forest Walk",
+    name: "Forest walk",
     colors: ["#2D6A4F", "#40916C", "#52B788", "#74C69D", "#1B4332"],
   },
   {
     id: "sunset",
-    name: "Golden Sunset",
+    name: "Golden sunset",
     colors: ["#F72585", "#B5179E", "#7209B7", "#560BAD", "#3A0CA3"],
   },
   {
     id: "earth",
-    name: "Earth Tones",
+    name: "Earth tones",
     colors: ["#BC6C25", "#DDA15E", "#FEFAE0", "#606C38", "#283618"],
   },
   {
     id: "professional",
-    name: "Professional Blue",
+    name: "Professional blue",
     colors: ["#03045E", "#023E8A", "#0077B6", "#0096C7", "#48CAE4"],
   },
   {
     id: "warm",
-    name: "Warm & Cozy",
+    name: "Warm & cozy",
     colors: ["#FF6B6B", "#FEC89A", "#FFD93D", "#C9B037", "#6B705C"],
   },
   {
@@ -48,17 +48,17 @@ const palettes = [
   },
   {
     id: "pastel",
-    name: "Soft Pastels",
+    name: "Soft pastels",
     colors: ["#FFADAD", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#9BF6FF"],
   },
   {
     id: "bold",
-    name: "Bold & Vibrant",
+    name: "Bold & vibrant",
     colors: ["#E63946", "#F4A261", "#2A9D8F", "#264653", "#E9C46A"],
   },
   {
     id: "minimal",
-    name: "Minimal Clean",
+    name: "Minimal clean",
     colors: ["#FFFFFF", "#F8F9FA", "#E9ECEF", "#212529", "#6C757D"],
   },
 ];
@@ -112,6 +112,7 @@ export default function ColorExploration({ data, updateData }: ColorExplorationP
       {/* Custom Colors Section */}
       <div className="p-5 bg-secondary/10 rounded-xl">
         <h3 className="font-semibold text-primary mb-4">Add specific colours</h3>
+
 
         <div className="flex gap-3 mb-4">
           <div className="flex items-center gap-2 flex-1">

@@ -1,9 +1,9 @@
 {
-  "name": "my-first-website",
+  "name": "tio-website-launchpad",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NEXT_TURBOPACK=0 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

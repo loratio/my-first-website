@@ -11,7 +11,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "tio | Website LookBook",
+  title: "tio | Website Lookbook",
   description: "Discover your website's visual identity through an interactive design brief experience. Select styles, colors, and define your brand personality.",
 };
 

@@ -23,7 +23,7 @@ export default function PageHero({
   subtitle,
   breadcrumbs,
   showCTA = false,
-  ctaText = "Book Consultation",
+  ctaText = "Book consultation",
   ctaHref = "/book-consultation",
 }: PageHeroProps) {
   return (

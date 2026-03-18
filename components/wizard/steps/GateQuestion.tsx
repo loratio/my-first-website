@@ -13,7 +13,7 @@ export default function GateQuestion({ data, updateData }: GateQuestionProps) {
     <div>
       <div className="mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-          Website Build Kick-Off
+          Website build kick-off
         </h2>
         <p className="text-text-muted">
           Let&apos;s start by understanding where you are in your journey with us.

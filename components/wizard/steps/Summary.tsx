@@ -71,12 +71,6 @@ function TagList({ items }: { items: string[] }) {
   );
 }
 
-const referralLabels: Record<string, string> = {
-  mentioned: "Mentioned on key pages only",
-  "dedicated-page": "Dedicated 'Referring Dentists' page",
-  "form-and-page": "Referral form + dedicated page",
-  "not-sure": "Not sure — please advise",
-};
 
 const visualDirectionLabels: Record<string, string> = {
   "keep-aligned": "Keep the current look closely aligned",
@@ -96,16 +90,16 @@ const styleNames: Record<string, string> = {
 };
 
 const paletteNames: Record<string, string> = {
-  ocean: "Ocean Depths",
-  forest: "Forest Walk",
-  sunset: "Golden Sunset",
-  earth: "Earth Tones",
-  professional: "Professional Blue",
-  warm: "Warm & Cozy",
+  ocean: "Ocean depths",
+  forest: "Forest walk",
+  sunset: "Golden sunset",
+  earth: "Earth tones",
+  professional: "Professional blue",
+  warm: "Warm & cozy",
   monochrome: "Monochrome",
-  pastel: "Soft Pastels",
-  bold: "Bold & Vibrant",
-  minimal: "Minimal Clean",
+  pastel: "Soft pastels",
+  bold: "Bold & vibrant",
+  minimal: "Minimal clean",
 };
 
 const paletteColors: Record<string, string[]> = {
@@ -141,7 +135,7 @@ export default function Summary({ data, goToStep }: SummaryProps) {
 
       <div className="space-y-6">
         {/* Step 1: Gate Question */}
-        <SectionCard title="Member Status" step={1} goToStep={goToStep}>
+        <SectionCard title="Member status" step={1} goToStep={goToStep}>
           <DataRow
             label="Building with us for the first time"
             value={data.isNewMember === "yes" ? "Yes — first build" : data.isNewMember === "no" ? "No — refreshing existing site" : null}
@@ -149,25 +143,17 @@ export default function Summary({ data, goToStep }: SummaryProps) {
         </SectionCard>
 
         {/* Step 2: Contacts & Sign-Off */}
-        <SectionCard title="Contacts & Sign-Off" step={2} goToStep={goToStep}>
+        <SectionCard title="Contacts & sign-off" step={2} goToStep={goToStep}>
           <DataRow label="Practice name" value={data.practiceName} />
+          <DataRow label="Practice URL" value={data.practiceUrl} />
           <DataRow label="Primary contact" value={data.primaryContact} />
           <DataRow label="Primary email" value={data.primaryEmail} />
           <DataRow label="Primary phone" value={data.primaryPhone} />
-          <DataRow label="Decision maker" value={data.decisionMaker} />
-          {data.otherApprovers && <DataRow label="Other approvers" value={data.otherApprovers} />}
-          <DataRow
-            label="Ready to proceed"
-            value={data.readyToProceed === "yes" ? "Yes" : data.readyToProceed === "no" ? "No" : null}
-          />
-          {data.readyToProceed === "no" && data.notReadyReason && (
-            <DataRow label="What needs to happen first" value={data.notReadyReason} />
-          )}
         </SectionCard>
 
         {/* Step 3: Locations & Enquiries - Only for new members */}
         {data.isNewMember === "yes" && (
-          <SectionCard title="Locations & Enquiries" step={3} goToStep={goToStep}>
+          <SectionCard title="Locations & enquiries" step={3} goToStep={goToStep}>
             <DataRow label="Number of locations" value={data.locationCount.toString()} />
             {data.locations.map((location, index) => (
               <div key={index} className="mt-3 p-3 bg-white/50 rounded-lg">
@@ -179,18 +165,11 @@ export default function Summary({ data, goToStep }: SummaryProps) {
               </div>
             ))}
             <DataRow label="Enquiry emails" value={data.enquiryEmails} />
-            <DataRow
-              label="Accepts referrals"
-              value={data.acceptsReferrals === "yes" ? "Yes" : data.acceptsReferrals === "no" ? "No" : null}
-            />
-            {data.acceptsReferrals === "yes" && (
-              <DataRow label="Referral handling" value={referralLabels[data.referralHandling]} />
-            )}
           </SectionCard>
         )}
 
         {/* Step 4: Goals & Homepage */}
-        <SectionCard title="Goals & Homepage Priorities" step={4} goToStep={goToStep}>
+        <SectionCard title="Goals & homepage priorities" step={4} goToStep={goToStep}>
           <DataRow
             label="Primary goal"
             value={data.primaryGoal === "other" ? data.primaryGoalOther : data.primaryGoal?.replace(/-/g, " ")}
@@ -211,42 +190,116 @@ export default function Summary({ data, goToStep }: SummaryProps) {
           )}
         </SectionCard>
 
-        {/* Step 5: Treatments & Consultation */}
-        <SectionCard title="Treatments & Consultation" step={5} goToStep={goToStep}>
-          <div className="py-1.5">
-            <span className="text-sm text-text-muted">Treatments/services:</span>
-            <TagList items={data.treatments} />
-          </div>
-          {data.treatments?.includes("other") && data.treatmentsOther && (
-            <DataRow label="Other treatments" value={data.treatmentsOther} />
+        {/* Step 5: Homepage wireframe */}
+        <SectionCard title="Homepage layout" step={5} goToStep={goToStep}>
+          {(data.homepageWireframe?.length || 0) > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {data.homepageWireframe.map((id, i) => (
+                <span key={id} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                  {i + 1}. {id.includes("+") ? id.split("+").join(" / ") : id.replace(/-/g, " ")}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-text-muted text-sm italic">No layout configured</p>
           )}
-          <DataRow label="Consultation process" value={data.consultationProcess} />
-          <DataRow
-            label="Virtual consultations"
-            value={
-              data.virtualConsultations === "yes"
-                ? "Yes"
-                : data.virtualConsultations === "no"
-                ? "No"
-                : data.virtualConsultations === "want-to"
-                ? "Not currently, but would like to"
-                : null
-            }
-          />
-          <DataRow label="Key USPs" value={data.keyUSPs} />
-          <DataRow label="Payment/finance overview" value={data.paymentOverview} />
         </SectionCard>
 
-        {/* Step 6: Audience & Competitors */}
-        <SectionCard title="Audience, Areas & Competitors" step={6} goToStep={goToStep}>
+        {/* Step 6: Treatments & Consultation */}
+        <SectionCard title="Treatments & consultation" step={6} goToStep={goToStep}>
+          {data.isNewMember === "no" ? (
+            <>
+              <DataRow
+                label="Treatments changed"
+                value={data.treatmentsChanged === "yes" ? "Yes" : data.treatmentsChanged === "no" ? "No — everything is the same" : null}
+              />
+              {data.treatmentsChanged === "yes" && data.treatmentsChangedDetails && (
+                <DataRow label="What's changed" value={data.treatmentsChangedDetails} />
+              )}
+            </>
+          ) : (
+            <>
+              <div className="py-1.5">
+                <span className="text-sm text-text-muted">Treatments/services:</span>
+                <TagList items={data.treatments} />
+              </div>
+              {data.treatments?.includes("other-aligners") && data.otherAlignerBrands && (
+                <DataRow label="Clear aligner brands" value={data.otherAlignerBrands} />
+              )}
+              {data.treatments?.includes("other") && data.treatmentsOther && (
+                <DataRow label="Other treatments" value={data.treatmentsOther} />
+              )}
+              <DataRow label="Consultation process" value={data.consultationProcess} />
+              <DataRow
+                label="Virtual consultations"
+                value={
+                  data.virtualConsultations === "yes"
+                    ? "Yes"
+                    : data.virtualConsultations === "no"
+                    ? "No"
+                    : data.virtualConsultations === "want-to"
+                    ? "Not currently, but would like to"
+                    : null
+                }
+              />
+              <DataRow label="Key USPs" value={data.keyUSPs} />
+              <DataRow label="Payment/finance overview" value={data.paymentOverview} />
+            </>
+          )}
+        </SectionCard>
+
+        {/* Step 7: Sitemap (refresh only) */}
+        {data.isNewMember === "no" && (data.sitemapPages?.length || 0) > 0 && (
+          <SectionCard title="Sitemap" step={7} goToStep={goToStep}>
+            <p className="text-sm text-text-muted">
+              {data.sitemapApproved ? "Approved" : "Not yet approved"} — {data.sitemapPages.length} top-level sections
+            </p>
+          </SectionCard>
+        )}
+
+        {/* Step 8: Audience & Competitors */}
+        <SectionCard title="Audience, areas & competitors" step={8} goToStep={goToStep}>
           <DataRow label="Typical patient" value={data.typicalPatient} />
           {data.desiredPatients && <DataRow label="Want to attract more" value={data.desiredPatients} />}
           <DataRow label="Top areas" value={data.topAreas} />
           {data.competitors && <DataRow label="Competitors" value={data.competitors} />}
         </SectionCard>
 
-        {/* Step 7: Design Styles */}
-        <SectionCard title="Design Styles" step={7} goToStep={goToStep}>
+        {/* Step 9: Brand & Design Preferences */}
+        <SectionCard title="Brand & design preferences" step={9} goToStep={goToStep}>
+          {data.isNewMember === "no" && (
+            <DataRow label="Logo updated" value={data.logoUpdated === "yes" ? "Yes" : data.logoUpdated === "no" ? "No" : null} />
+          )}
+          {(data.logoFiles?.length || 0) > 0 && (
+            <div className="py-1.5">
+              <span className="text-sm text-text-muted">Logo files:</span>
+              <TagList items={data.logoFiles} />
+            </div>
+          )}
+          <DataRow
+            label="Brand guidelines"
+            value={data.hasBrandGuidelines === "yes" ? "Yes" : data.hasBrandGuidelines === "no" ? "No" : data.hasBrandGuidelines === "not-sure" ? "Not sure" : null}
+          />
+          <DataRow
+            label="Colour scheme"
+            value={
+              data.colourSchemePreference === "keep" ? "Keep current"
+                : data.colourSchemePreference === "existing" ? "Has brand colours"
+                : data.colourSchemePreference === "open" ? "Open to suggestions"
+                : data.colourSchemePreference === "partial" ? "Some elements, open to changes"
+                : null
+            }
+          />
+          <DataRow label="Aesthetic keywords" value={data.aestheticKeywords} />
+          <DataRow label="First impression" value={data.firstImpression} />
+          {data.designLikes && <DataRow label="Happy with on current site" value={data.designLikes} />}
+          {data.designDislikes && <DataRow label="Not happy with on current site" value={data.designDislikes} />}
+          {data.designInspiration && <DataRow label="Inspiration websites" value={data.designInspiration} />}
+          {data.designAvoid && <DataRow label="Wants to avoid" value={data.designAvoid} />}
+        </SectionCard>
+
+        {/* Step 10: Design Styles */}
+        <SectionCard title="Design styles" step={10} goToStep={goToStep}>
           {(data.selectedStyles?.length || 0) > 0 ? (
             <div className="flex flex-wrap gap-2">
               {data.selectedStyles.map((style) => (
@@ -263,8 +316,8 @@ export default function Summary({ data, goToStep }: SummaryProps) {
           )}
         </SectionCard>
 
-        {/* Step 8: Brand Attributes */}
-        <SectionCard title="Brand Attributes" step={8} goToStep={goToStep}>
+        {/* Step 11: Brand Attributes */}
+        <SectionCard title="Brand attributes" step={11} goToStep={goToStep}>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             <div className="text-sm">
               <span className="text-text-muted">Shape: </span>
@@ -299,8 +352,8 @@ export default function Summary({ data, goToStep }: SummaryProps) {
           </div>
         </SectionCard>
 
-        {/* Step 9: Colour Exploration */}
-        <SectionCard title="Colour Exploration" step={9} goToStep={goToStep}>
+        {/* Step 12: Colour Exploration */}
+        <SectionCard title="Colour exploration" step={12} goToStep={goToStep}>
           {(data.selectedPalettes?.length || 0) > 0 || (data.customColors?.length || 0) > 0 ? (
             <div className="space-y-4">
               {data.selectedPalettes?.map((paletteId) => (
@@ -331,6 +384,7 @@ export default function Summary({ data, goToStep }: SummaryProps) {
                     ))}
                   </div>
                   <span className="text-sm text-primary">Custom colours</span>
+
                 </div>
               )}
             </div>
@@ -339,16 +393,8 @@ export default function Summary({ data, goToStep }: SummaryProps) {
           )}
         </SectionCard>
 
-        {/* Step 10: Brand & Tone */}
-        <SectionCard title="Brand, Design & Content Style" step={10} goToStep={goToStep}>
-          {(data.logoFiles?.length || 0) > 0 && (
-            <div className="py-1.5">
-              <span className="text-sm text-text-muted">Logo files:</span>
-              <TagList items={data.logoFiles} />
-            </div>
-          )}
-          <DataRow label="Aesthetic keywords" value={data.aestheticKeywords} />
-          <DataRow label="First impression" value={data.firstImpression} />
+        {/* Step 13: Content Style & Tone */}
+        <SectionCard title="Content style & tone of voice" step={13} goToStep={goToStep}>
           <DataRow label="Content style" value={`${data.contentStyle}/10 (1 = succinct, 10 = detailed)`} />
           <div className="py-1.5">
             <span className="text-sm text-text-muted">Tone of voice:</span>
@@ -357,8 +403,8 @@ export default function Summary({ data, goToStep }: SummaryProps) {
           {data.wordsToAvoid && <DataRow label="Words/topics to avoid" value={data.wordsToAvoid} />}
         </SectionCard>
 
-        {/* Step 11: Assets & Content */}
-        <SectionCard title="Assets & Content Inputs" step={11} goToStep={goToStep}>
+        {/* Step 14: Assets & Content */}
+        <SectionCard title="Assets & content inputs" step={14} goToStep={goToStep}>
           <DataRow
             label="Provide staff imagery"
             value={data.provideStaffImagery?.replace(/-/g, " ")}
@@ -380,9 +426,9 @@ export default function Summary({ data, goToStep }: SummaryProps) {
           )}
         </SectionCard>
 
-        {/* Step 12: New Member Sections */}
+        {/* Step 15: New Member Sections */}
         {data.isNewMember === "yes" && (
-          <SectionCard title="New Member Details" step={12} goToStep={goToStep}>
+          <SectionCard title="New member details" step={15} goToStep={goToStep}>
             <DataRow
               label="Has existing website"
               value={data.hasExistingWebsite?.replace(/-/g, " ")}
@@ -413,9 +459,9 @@ export default function Summary({ data, goToStep }: SummaryProps) {
           </SectionCard>
         )}
 
-        {/* Step 12: Existing Member Sections */}
+        {/* Step 15: Existing Member Sections */}
         {data.isNewMember === "no" && (
-          <SectionCard title="Site Refresh Details" step={12} goToStep={goToStep}>
+          <SectionCard title="Site refresh details" step={15} goToStep={goToStep}>
             <div className="py-1.5">
               <span className="text-sm text-text-muted">What has changed:</span>
               <TagList items={data.whatHasChanged} />

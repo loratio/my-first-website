@@ -53,7 +53,7 @@ export default function ServiceCard({
           featured ? "text-[#c9707d] hover:text-[#d4919e]" : "text-[#c9707d] hover:text-[#b85c69]"
         }`}
       >
-        Learn More
+        Learn more
         <ChevronRight className="h-4 w-4" />
       </Link>
     </motion.div>

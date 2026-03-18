@@ -32,7 +32,7 @@ export default function Header() {
               href="/brief"
               className="bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary-light transition-colors font-medium"
             >
-              Start Brief
+              Start brief
             </Link>
           </div>
 
@@ -74,7 +74,7 @@ export default function Header() {
                 className="block bg-primary text-white px-5 py-3 rounded-full text-center hover:bg-primary-light font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Start Brief
+                Start brief
               </Link>
             </div>
           </motion.div>

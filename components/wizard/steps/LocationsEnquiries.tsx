@@ -1,7 +1,7 @@
 "use client";
 
 import { WizardData, LocationData } from "../WizardContainer";
-import FormField, { TextInput, TextArea, RadioGroup, Select, NumberInput } from "../ui/FormField";
+import FormField, { TextInput, TextArea, Select } from "../ui/FormField";
 import { Plus, Trash2 } from "lucide-react";
 
 interface LocationsEnquiriesProps {
@@ -11,7 +11,7 @@ interface LocationsEnquiriesProps {
 
 export default function LocationsEnquiries({ data, updateData }: LocationsEnquiriesProps) {
   const updateLocationCount = (count: number) => {
-    const newCount = Math.max(1, Math.min(10, count));
+    const newCount = Math.max(1, Math.min(15, count));
     const newLocations = [...data.locations];
 
     while (newLocations.length < newCount) {
@@ -34,7 +34,7 @@ export default function LocationsEnquiries({ data, updateData }: LocationsEnquir
     <div>
       <div className="mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-          Locations &amp; Enquiries
+          Locations &amp; enquiries
         </h2>
         <p className="text-text-muted">
           Tell us about your practice locations and how you&apos;d like to handle website enquiries.
@@ -42,13 +42,14 @@ export default function LocationsEnquiries({ data, updateData }: LocationsEnquir
       </div>
 
       <div className="space-y-6">
-        <FormField label="How many practice locations should the website include?" required>
-          <NumberInput
-            value={data.locationCount}
-            onChange={updateLocationCount}
-            min={1}
-            max={10}
-            placeholder="1"
+        <FormField label="How many practice locations do you have?" required>
+          <Select
+            value={data.locationCount.toString()}
+            onChange={(value) => updateLocationCount(parseInt(value))}
+            options={Array.from({ length: 15 }, (_, i) => ({
+              value: (i + 1).toString(),
+              label: (i + 1).toString(),
+            }))}
           />
         </FormField>
 
@@ -109,36 +110,6 @@ export default function LocationsEnquiries({ data, updateData }: LocationsEnquir
           />
         </FormField>
 
-        <div>
-          <label className="block text-sm font-medium text-primary mb-3">
-            Do you accept dentist referrals?
-            <span className="text-red-500 ml-1">*</span>
-          </label>
-          <RadioGroup
-            options={[
-              { value: "yes", label: "Yes" },
-              { value: "no", label: "No" },
-            ]}
-            value={data.acceptsReferrals}
-            onChange={(value) => updateData({ acceptsReferrals: value as "yes" | "no" })}
-            layout="horizontal"
-          />
-        </div>
-
-        {data.acceptsReferrals === "yes" && (
-          <FormField label="How would you like referrals handled on the website?" required>
-            <RadioGroup
-              options={[
-                { value: "mentioned", label: "Mentioned on key pages only" },
-                { value: "dedicated-page", label: "Dedicated \"Referring Dentists\" page" },
-                { value: "form-and-page", label: "Referral form + dedicated page" },
-                { value: "not-sure", label: "Not sure — please advise" },
-              ]}
-              value={data.referralHandling}
-              onChange={(value) => updateData({ referralHandling: value })}
-            />
-          </FormField>
-        )}
       </div>
     </div>
   );

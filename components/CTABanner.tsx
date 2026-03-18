@@ -13,9 +13,9 @@ interface CTABannerProps {
 }
 
 export default function CTABanner({
-  title = "Ready to Transform Your Smile?",
+  title = "Ready to transform your smile?",
   subtitle = "Schedule your free consultation today and take the first step toward the confident smile you've always wanted.",
-  buttonText = "Book Your Free Consultation",
+  buttonText = "Book your free consultation",
   buttonHref = "/book-consultation",
   variant = "primary",
 }: CTABannerProps) {

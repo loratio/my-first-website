@@ -39,9 +39,7 @@ const homepagePriorityOptions = [
   { value: "technology", label: "Technology" },
   { value: "before-afters", label: "Before & afters" },
   { value: "reviews", label: "Reviews" },
-  { value: "locations", label: "Locations" },
-  { value: "virtual-consults", label: "Virtual consults" },
-  { value: "referrals", label: "Referrals" },
+  { value: "why-choose-us", label: "Why choose us / USPs" },
   { value: "other", label: "Other" },
 ];
 
@@ -50,7 +48,7 @@ export default function GoalsHomepage({ data, updateData }: GoalsHomepageProps) 
     <div>
       <div className="mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-          Goals &amp; Homepage Priorities
+          Goals &amp; homepage priorities
         </h2>
         <p className="text-text-muted">
           Help us understand what you want your website to achieve.

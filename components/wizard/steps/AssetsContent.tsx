@@ -19,7 +19,7 @@ export default function AssetsContent({ data, updateData }: AssetsContentProps) 
     <div>
       <div className="mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-          Assets &amp; Content Inputs
+          Assets &amp; content inputs
         </h2>
         <p className="text-text-muted">
           Let us know what imagery and content you can provide.

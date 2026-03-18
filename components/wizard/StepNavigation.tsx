@@ -45,7 +45,7 @@ export default function StepNavigation({
           onClick={onSubmit}
           className="flex items-center gap-2 bg-green-600 text-white px-8 py-3 rounded-full font-medium hover:bg-green-700 transition-colors shadow-lg shadow-green-600/25"
         >
-          Submit Brief
+          Submit brief
           <Send className="w-5 h-5" />
         </motion.button>
       ) : (

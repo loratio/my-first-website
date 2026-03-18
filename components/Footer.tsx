@@ -9,7 +9,7 @@ export default function Footer() {
           <Logo variant="light" size="md" />
 
           <p className="text-secondary text-sm text-center">
-            Discover your website&apos;s visual identity through an interactive design experience.
+            A smarter way to start your website build.
           </p>
 
           <div className="flex items-center gap-6 text-sm text-white/70">
@@ -17,7 +17,7 @@ export default function Footer() {
               Home
             </Link>
             <Link href="/brief" className="hover:text-secondary transition-colors">
-              Start Brief
+              Start brief
             </Link>
           </div>
         </div>

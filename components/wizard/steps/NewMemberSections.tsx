@@ -13,7 +13,7 @@ export default function NewMemberSections({ data, updateData }: NewMemberSection
     <div>
       <div className="mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-          Your Starting Point
+          Your starting point
         </h2>
         <p className="text-text-muted">
           Since this is your first website build with us, we&apos;d like to understand your current situation.
@@ -23,7 +23,7 @@ export default function NewMemberSections({ data, updateData }: NewMemberSection
       <div className="space-y-6">
         {/* SECTION NEW-1: Starting Point */}
         <div className="p-5 bg-secondary/10 rounded-xl space-y-5">
-          <h3 className="font-semibold text-primary">Current Website</h3>
+          <h3 className="font-semibold text-primary">Current website</h3>
 
           <FormField label="Do you currently have an existing website live?" required>
             <RadioGroup
@@ -71,7 +71,7 @@ export default function NewMemberSections({ data, updateData }: NewMemberSection
 
         {/* SECTION NEW-2: Brand Materials */}
         <div className="p-5 bg-secondary/10 rounded-xl space-y-5">
-          <h3 className="font-semibold text-primary">Brand Materials</h3>
+          <h3 className="font-semibold text-primary">Brand materials</h3>
 
           <FormField label="Do you have brand guidelines (fonts, colours, usage rules)?" required>
             <RadioGroup

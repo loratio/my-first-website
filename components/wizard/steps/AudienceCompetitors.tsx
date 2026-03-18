@@ -13,7 +13,7 @@ export default function AudienceCompetitors({ data, updateData }: AudienceCompet
     <div>
       <div className="mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-          Audience, Areas &amp; Competitors
+          Audience, areas &amp; competitors
         </h2>
         <p className="text-text-muted">
           Help us understand who you&apos;re trying to reach and where they&apos;re coming from.

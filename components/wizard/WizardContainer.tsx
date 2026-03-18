@@ -10,8 +10,12 @@ import GateQuestion from "./steps/GateQuestion";
 import ContactsSignOff from "./steps/ContactsSignOff";
 import LocationsEnquiries from "./steps/LocationsEnquiries";
 import GoalsHomepage from "./steps/GoalsHomepage";
+import HomepageWireframe from "./steps/HomepageWireframe";
 import TreatmentsConsultation from "./steps/TreatmentsConsultation";
+import SitemapEditor from "./steps/SitemapEditor";
+import type { SitemapNode } from "./steps/SitemapEditor";
 import AudienceCompetitors from "./steps/AudienceCompetitors";
+import DesignPreferences from "./steps/DesignPreferences";
 import StyleSelection from "./steps/StyleSelection";
 import BrandAttributes from "./steps/BrandAttributes";
 import ColorExploration from "./steps/ColorExploration";
@@ -34,6 +38,7 @@ export interface WizardData {
 
   // CORE-1: Contacts & Sign-Off
   practiceName: string;
+  practiceUrl: string;
   primaryContact: string;
   primaryEmail: string;
   primaryPhone: string;
@@ -60,9 +65,15 @@ export interface WizardData {
 
   // CORE-4: Treatments & Consultation
   treatments: string[];
+  otherAlignerBrands: string;
   treatmentsOther: string;
+  treatmentsChanged: string;
+  treatmentsChangedDetails: string;
   consultationProcess: string;
+  consultationFree: string;
   virtualConsultations: string;
+  virtualConsultationDetails: string;
+  virtualConsultationFree: string;
   keyUSPs: string;
   paymentOverview: string;
 
@@ -71,6 +82,21 @@ export interface WizardData {
   desiredPatients: string;
   topAreas: string;
   competitors: string;
+
+  // Homepage wireframe
+  homepageWireframe: string[];
+  wireframeApproved: boolean;
+
+  // Sitemap (refresh flow)
+  sitemapPages: SitemapNode[];
+  sitemapApproved: boolean;
+
+  // Design preferences
+  colourSchemePreference: string;
+  designLikes: string;
+  designDislikes: string;
+  designInspiration: string;
+  designAvoid: string;
 
   // Design Styles (restored)
   selectedStyles: string[];
@@ -89,6 +115,7 @@ export interface WizardData {
   customColors: string[];
 
   // CORE-6: Brand & Design
+  logoUpdated: string;
   logoFiles: string[];
   aestheticKeywords: string;
   firstImpression: string;
@@ -129,6 +156,7 @@ export interface WizardData {
 export const initialData: WizardData = {
   isNewMember: "",
   practiceName: "",
+  practiceUrl: "",
   primaryContact: "",
   primaryEmail: "",
   primaryPhone: "",
@@ -149,15 +177,30 @@ export const initialData: WizardData = {
   homepagePriorities: [],
   homepagePrioritiesOther: "",
   treatments: [],
+  otherAlignerBrands: "",
   treatmentsOther: "",
+  treatmentsChanged: "",
+  treatmentsChangedDetails: "",
   consultationProcess: "",
+  consultationFree: "",
   virtualConsultations: "",
+  virtualConsultationDetails: "",
+  virtualConsultationFree: "",
   keyUSPs: "",
   paymentOverview: "",
   typicalPatient: "",
   desiredPatients: "",
   topAreas: "",
   competitors: "",
+  homepageWireframe: [],
+  wireframeApproved: false,
+  colourSchemePreference: "",
+  designLikes: "",
+  designDislikes: "",
+  designInspiration: "",
+  designAvoid: "",
+  sitemapPages: [],
+  sitemapApproved: false,
   selectedStyles: [],
   attributes: {
     geometric: 50,
@@ -168,6 +211,7 @@ export const initialData: WizardData = {
   },
   selectedPalettes: [],
   customColors: [],
+  logoUpdated: "",
   logoFiles: [],
   aestheticKeywords: "",
   firstImpression: "",
@@ -195,24 +239,28 @@ export const initialData: WizardData = {
 
 const STORAGE_KEY = "tio-kickoff-data";
 
-// All steps - 13 total for new members, 12 for existing (skip step 3)
+// All steps - 15 total, but some are skipped depending on member type:
+// - Existing members skip step 3 (Locations - new only)
 const allSteps = [
-  { id: 1, title: "Get Started", shortTitle: "Start" },
-  { id: 2, title: "Contacts", shortTitle: "Contacts" },
-  { id: 3, title: "Locations", shortTitle: "Locations" },
-  { id: 4, title: "Goals", shortTitle: "Goals" },
-  { id: 5, title: "Treatments", shortTitle: "Treatments" },
-  { id: 6, title: "Audience", shortTitle: "Audience" },
-  { id: 7, title: "Design Styles", shortTitle: "Styles" },
-  { id: 8, title: "Brand Attributes", shortTitle: "Attributes" },
-  { id: 9, title: "Colours", shortTitle: "Colours" },
-  { id: 10, title: "Brand & Tone", shortTitle: "Brand" },
-  { id: 11, title: "Assets", shortTitle: "Assets" },
-  { id: 12, title: "Your Details", shortTitle: "Details" },
-  { id: 13, title: "Review", shortTitle: "Review" },
+  { id: 1, title: "Get started", icon: "Play" },
+  { id: 2, title: "Contacts", icon: "Users" },
+  { id: 3, title: "Locations", icon: "MapPin" },
+  { id: 4, title: "Goals", icon: "Target" },
+  { id: 5, title: "Layout", icon: "Monitor" },
+  { id: 6, title: "Treatments", icon: "Heart" },
+  { id: 7, title: "Sitemap", icon: "FileText" },
+  { id: 8, title: "Audience", icon: "Eye" },
+  { id: 9, title: "Design", icon: "Paintbrush" },
+  { id: 10, title: "Design styles", icon: "Layout" },
+  { id: 11, title: "Brand attributes", icon: "Sliders" },
+  { id: 12, title: "Colours", icon: "Palette" },
+  { id: 13, title: "Brand & tone", icon: "Type" },
+  { id: 14, title: "Assets", icon: "Image" },
+  { id: 15, title: "Your details", icon: "FileText" },
+  { id: 16, title: "Review", icon: "ClipboardCheck" },
 ];
 
-const TOTAL_STEPS = 13;
+const TOTAL_STEPS = 16;
 
 export default function WizardContainer() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -241,10 +289,11 @@ export default function WizardContainer() {
     setData((prev) => ({ ...prev, ...updates }));
   }, []);
 
-  // Check if step should be skipped for existing members
+  // Check if step should be skipped based on member type
   const shouldSkipStep = (step: number) => {
     // Existing members skip step 3 (Locations & Enquiries)
-    return data.isNewMember === "no" && step === 3;
+    if (data.isNewMember === "no" && step === 3) return true;
+    return false;
   };
 
   const goToStep = (step: number) => {
@@ -256,22 +305,20 @@ export default function WizardContainer() {
   const handleNext = () => {
     if (currentStep < TOTAL_STEPS) {
       let nextStep = currentStep + 1;
-      // Skip step 3 for existing members
-      if (shouldSkipStep(nextStep)) {
-        nextStep = nextStep + 1;
+      while (nextStep <= TOTAL_STEPS && shouldSkipStep(nextStep)) {
+        nextStep++;
       }
-      setCurrentStep(nextStep);
+      if (nextStep <= TOTAL_STEPS) setCurrentStep(nextStep);
     }
   };
 
   const handlePrevious = () => {
     if (currentStep > 1) {
       let prevStep = currentStep - 1;
-      // Skip step 3 for existing members
-      if (shouldSkipStep(prevStep)) {
-        prevStep = prevStep - 1;
+      while (prevStep >= 1 && shouldSkipStep(prevStep)) {
+        prevStep--;
       }
-      setCurrentStep(prevStep);
+      if (prevStep >= 1) setCurrentStep(prevStep);
     }
   };
 
@@ -312,7 +359,7 @@ export default function WizardContainer() {
             onClick={handleReset}
             className="bg-primary text-white px-6 py-3 rounded-full hover:bg-primary-light transition-colors font-medium"
           >
-            Start Another Form
+            Start another form
           </button>
         </motion.div>
       </div>
@@ -330,24 +377,30 @@ export default function WizardContainer() {
       case 4:
         return <GoalsHomepage data={data} updateData={updateData} />;
       case 5:
-        return <TreatmentsConsultation data={data} updateData={updateData} />;
+        return <HomepageWireframe data={data} updateData={updateData} />;
       case 6:
-        return <AudienceCompetitors data={data} updateData={updateData} />;
+        return <TreatmentsConsultation data={data} updateData={updateData} />;
       case 7:
-        return <StyleSelection data={data} updateData={updateData} />;
+        return <SitemapEditor data={data} updateData={updateData} />;
       case 8:
-        return <BrandAttributes data={data} updateData={updateData} />;
+        return <AudienceCompetitors data={data} updateData={updateData} />;
       case 9:
-        return <ColorExploration data={data} updateData={updateData} />;
+        return <DesignPreferences data={data} updateData={updateData} />;
       case 10:
-        return <BrandDesign data={data} updateData={updateData} />;
+        return <StyleSelection data={data} updateData={updateData} />;
       case 11:
-        return <AssetsContent data={data} updateData={updateData} />;
+        return <BrandAttributes data={data} updateData={updateData} />;
       case 12:
+        return <ColorExploration data={data} updateData={updateData} />;
+      case 13:
+        return <BrandDesign data={data} updateData={updateData} />;
+      case 14:
+        return <AssetsContent data={data} updateData={updateData} />;
+      case 15:
         return data.isNewMember === "yes"
           ? <NewMemberSections data={data} updateData={updateData} />
           : <ExistingMemberSections data={data} updateData={updateData} />;
-      case 13:
+      case 16:
         return <Summary data={data} goToStep={goToStep} />;
       default:
         return null;
@@ -356,14 +409,12 @@ export default function WizardContainer() {
 
   // Update steps based on member type
   const steps = allSteps
-    // Filter out step 3 (Locations) for existing members
-    .filter((step) => !(data.isNewMember === "no" && step.id === 3))
+    .filter((step) => !shouldSkipStep(step.id))
     .map((step) => {
-      if (step.id === 12) {
+      if (step.id === 15) {
         return {
           ...step,
-          title: data.isNewMember === "yes" ? "New Member" : data.isNewMember === "no" ? "Existing Member" : "Your Details",
-          shortTitle: data.isNewMember === "yes" ? "New" : data.isNewMember === "no" ? "Existing" : "Details",
+          title: data.isNewMember === "yes" ? "New member" : data.isNewMember === "no" ? "Existing member" : "Your details",
         };
       }
       return step;
