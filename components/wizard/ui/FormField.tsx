@@ -26,7 +26,7 @@ interface TextInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  type?: "text" | "email" | "tel" | "number";
+  type?: "text" | "email" | "tel" | "number" | "url";
 }
 
 export function TextInput({ value, onChange, placeholder, type = "text" }: TextInputProps) {
