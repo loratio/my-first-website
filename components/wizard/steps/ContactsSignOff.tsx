@@ -1,7 +1,7 @@
 "use client";
 
 import { WizardData } from "../WizardContainer";
-import FormField, { TextInput, TextArea } from "../ui/FormField";
+import FormField, { TextInput, TextArea, Select } from "../ui/FormField";
 
 interface ContactsSignOffProps {
   data: WizardData;
@@ -21,6 +21,22 @@ export default function ContactsSignOff({ data, updateData }: ContactsSignOffPro
       </div>
 
       <div className="space-y-5">
+        <FormField label="Region" required>
+          <Select
+            value={data.practiceRegion || ""}
+            onChange={(value) => updateData({ practiceRegion: value })}
+            options={[
+              { value: "UK", label: "United Kingdom" },
+              { value: "IE", label: "Ireland" },
+              { value: "AU", label: "Australia" },
+              { value: "NZ", label: "New Zealand" },
+              { value: "CA", label: "Canada" },
+              { value: "US", label: "United States" },
+            ]}
+            placeholder="Select your region"
+          />
+        </FormField>
+
         <FormField label="Practice name" required>
           <TextInput
             value={data.practiceName}

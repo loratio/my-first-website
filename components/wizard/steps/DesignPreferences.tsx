@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useCallback } from "react";
+import { Loader2 } from "lucide-react";
 import { WizardData } from "../WizardContainer";
 import FormField, { TextInput, TextArea, RadioGroup, FileUpload } from "../ui/FormField";
 
@@ -10,6 +12,61 @@ interface DesignPreferencesProps {
 
 export default function DesignPreferences({ data, updateData }: DesignPreferencesProps) {
   const isRefresh = data.isNewMember === "no";
+  const [uploading, setUploading] = useState(false);
+
+  // Ensure Drive folder exists, then upload files to it
+  const uploadToDrive = useCallback(async (files: FileList | null, type: "logo" | "brand") => {
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+
+    try {
+      // Create folder if it doesn't exist yet
+      let folderId = data.assetsFolderId;
+      if (!folderId && data.practiceName) {
+        const res = await fetch("/api/drive", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ practiceName: data.practiceName, region: data.practiceRegion }),
+        });
+        const json = await res.json();
+        if (json.success) {
+          folderId = json.folderId;
+          updateData({ assetsFolderId: json.folderId, assetsFolderUrl: json.folderUrl });
+        }
+      }
+
+      if (!folderId) {
+        // Fall back to just storing file names
+        const names = Array.from(files).map((f) => f.name);
+        if (type === "logo") updateData({ logoFiles: names });
+        else updateData({ brandGuidelinesFiles: names });
+        setUploading(false);
+        return;
+      }
+
+      // Upload each file
+      const names: string[] = [];
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("folderId", folderId);
+        const res = await fetch("/api/drive", { method: "POST", body: formData });
+        const json = await res.json();
+        if (json.success) names.push(json.fileName);
+      }
+
+      if (type === "logo") updateData({ logoFiles: names });
+      else updateData({ brandGuidelinesFiles: names });
+    } catch {
+      // Fall back to just storing file names
+      const names = Array.from(files).map((f) => f.name);
+      if (type === "logo") updateData({ logoFiles: names });
+      else updateData({ brandGuidelinesFiles: names });
+    } finally {
+      setUploading(false);
+    }
+  }, [data.assetsFolderId, data.practiceName, data.practiceRegion, updateData]);
 
   return (
     <div>
@@ -41,31 +98,29 @@ export default function DesignPreferences({ data, updateData }: DesignPreference
 
             {data.logoUpdated === "yes" && (
               <FormField label="Upload your updated logo files">
-                <FileUpload
-                  onChange={(files) => {
-                    if (files) {
-                      const fileNames = Array.from(files).map((f) => f.name);
-                      updateData({ logoFiles: fileNames });
-                    }
-                  }}
-                  accept=".png,.jpg,.svg,.eps,.pdf"
-                  currentFiles={data.logoFiles}
-                />
+                {uploading ? (
+                  <div className="flex items-center gap-2 py-4 justify-center"><Loader2 className="w-4 h-4 animate-spin text-primary" /><span className="text-sm text-text-muted">Uploading to your assets folder...</span></div>
+                ) : (
+                  <FileUpload
+                    onChange={(files) => uploadToDrive(files, "logo")}
+                    accept=".png,.jpg,.svg,.eps,.pdf"
+                    currentFiles={data.logoFiles}
+                  />
+                )}
               </FormField>
             )}
           </>
         ) : (
           <FormField label="Upload your logo files (if available)">
-            <FileUpload
-              onChange={(files) => {
-                if (files) {
-                  const fileNames = Array.from(files).map((f) => f.name);
-                  updateData({ logoFiles: fileNames });
-                }
-              }}
-              accept=".png,.jpg,.svg,.eps,.pdf"
-              currentFiles={data.logoFiles}
-            />
+            {uploading ? (
+              <div className="flex items-center gap-2 py-4 justify-center"><Loader2 className="w-4 h-4 animate-spin text-primary" /><span className="text-sm text-text-muted">Uploading to your assets folder...</span></div>
+            ) : (
+              <FileUpload
+                onChange={(files) => uploadToDrive(files, "logo")}
+                accept=".png,.jpg,.svg,.eps,.pdf"
+                currentFiles={data.logoFiles}
+              />
+            )}
           </FormField>
         )}
 
@@ -84,16 +139,15 @@ export default function DesignPreferences({ data, updateData }: DesignPreference
 
         {data.hasBrandGuidelines === "yes" && (
           <FormField label="Upload brand guidelines or documents">
-            <FileUpload
-              onChange={(files) => {
-                if (files) {
-                  const fileNames = Array.from(files).map((f) => f.name);
-                  updateData({ brandGuidelinesFiles: fileNames });
-                }
-              }}
-              accept=".pdf,.png,.jpg,.svg,.doc,.docx"
-              currentFiles={data.brandGuidelinesFiles}
-            />
+            {uploading ? (
+              <div className="flex items-center gap-2 py-4 justify-center"><Loader2 className="w-4 h-4 animate-spin text-primary" /><span className="text-sm text-text-muted">Uploading to your assets folder...</span></div>
+            ) : (
+              <FileUpload
+                onChange={(files) => uploadToDrive(files, "brand")}
+                accept=".pdf,.png,.jpg,.svg,.doc,.docx"
+                currentFiles={data.brandGuidelinesFiles}
+              />
+            )}
           </FormField>
         )}
 

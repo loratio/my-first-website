@@ -43,7 +43,7 @@ export default function StepNavigation({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onSubmit}
-          className="flex items-center gap-2 bg-green-600 text-white px-8 py-3 rounded-full font-medium hover:bg-green-700 transition-colors shadow-lg shadow-green-600/25"
+          className="flex items-center gap-2 bg-primary text-secondary px-8 py-3 rounded-full font-medium hover:bg-primary-light transition-colors shadow-lg shadow-primary/25"
         >
           Submit brief
           <Send className="w-5 h-5" />

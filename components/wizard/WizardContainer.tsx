@@ -37,6 +37,7 @@ export interface WizardData {
   isNewMember: "yes" | "no" | "";
 
   // CORE-1: Contacts & Sign-Off
+  practiceRegion: string;
   practiceName: string;
   practiceUrl: string;
   primaryContact: string;
@@ -87,6 +88,9 @@ export interface WizardData {
   homepageWireframe: string[];
   wireframeApproved: boolean;
 
+  // Summary confirmation
+  summaryConfirmed: boolean;
+
   // Sitemap (refresh flow)
   sitemapPages: SitemapNode[];
   sitemapApproved: boolean;
@@ -101,14 +105,8 @@ export interface WizardData {
   // Design Styles (restored)
   selectedStyles: string[];
 
-  // Brand Attributes (restored)
-  attributes: {
-    geometric: number;
-    abstract: number;
-    classic: number;
-    playful: number;
-    simple: number;
-  };
+  // Design direction choices
+  designChoices: Record<string, string>;
 
   // Color Exploration (restored)
   selectedPalettes: string[];
@@ -120,10 +118,14 @@ export interface WizardData {
   aestheticKeywords: string;
   firstImpression: string;
   contentStyle: number;
+  contentStyleChoice: string;
   toneOfVoice: string[];
   wordsToAvoid: string;
 
   // CORE-7: Assets & Content
+  hasAssets: string;
+  assetsFolderId: string;
+  assetsFolderUrl: string;
   provideStaffImagery: string;
   providePatientImagery: string;
   providePracticePhotos: string;
@@ -155,6 +157,7 @@ export interface WizardData {
 
 export const initialData: WizardData = {
   isNewMember: "",
+  practiceRegion: "",
   practiceName: "",
   practiceUrl: "",
   primaryContact: "",
@@ -194,6 +197,7 @@ export const initialData: WizardData = {
   competitors: "",
   homepageWireframe: [],
   wireframeApproved: false,
+  summaryConfirmed: false,
   colourSchemePreference: "",
   designLikes: "",
   designDislikes: "",
@@ -202,13 +206,7 @@ export const initialData: WizardData = {
   sitemapPages: [],
   sitemapApproved: false,
   selectedStyles: [],
-  attributes: {
-    geometric: 50,
-    abstract: 50,
-    classic: 50,
-    playful: 50,
-    simple: 50,
-  },
+  designChoices: {},
   selectedPalettes: [],
   customColors: [],
   logoUpdated: "",
@@ -216,8 +214,12 @@ export const initialData: WizardData = {
   aestheticKeywords: "",
   firstImpression: "",
   contentStyle: 5,
+  contentStyleChoice: "",
   toneOfVoice: [],
   wordsToAvoid: "",
+  hasAssets: "",
+  assetsFolderId: "",
+  assetsFolderUrl: "",
   provideStaffImagery: "",
   providePatientImagery: "",
   providePracticePhotos: "",
@@ -256,16 +258,133 @@ const allSteps = [
   { id: 12, title: "Colours", icon: "Palette" },
   { id: 13, title: "Brand & tone", icon: "Type" },
   { id: 14, title: "Assets", icon: "Image" },
-  { id: 15, title: "Your details", icon: "FileText" },
-  { id: 16, title: "Review", icon: "ClipboardCheck" },
+  { id: 15, title: "Review", icon: "ClipboardCheck" },
 ];
 
-const TOTAL_STEPS = 16;
+const TOTAL_STEPS = 15;
+
+// ---------------------------------------------------------------------------
+// Step validation
+// ---------------------------------------------------------------------------
+
+function validateStep(step: number, data: WizardData): string[] {
+  const errors: string[] = [];
+  const isNewBuild = data.isNewMember === "yes";
+
+  switch (step) {
+    case 1: // Gate question
+      if (!data.isNewMember) errors.push("Please select whether this is a new build or refresh");
+      break;
+
+    case 2: // Contacts
+      if (!data.practiceRegion) errors.push("Region is required");
+      if (!data.practiceName.trim()) errors.push("Practice name is required");
+      if (!data.practiceUrl.trim()) errors.push("Practice URL is required");
+      if (!data.primaryContact.trim()) errors.push("Primary contact is required");
+      if (!data.primaryEmail.trim()) errors.push("Primary contact email is required");
+      break;
+
+    case 3: // Locations (new builds only)
+      if (isNewBuild) {
+        if (!data.locationCount || data.locationCount < 1) errors.push("Number of locations is required");
+        for (let i = 0; i < data.locations.length; i++) {
+          const loc = data.locations[i];
+          if (!loc.name.trim()) errors.push(`Location ${i + 1}: name is required`);
+          if (!loc.address.trim()) errors.push(`Location ${i + 1}: address is required`);
+          if (!loc.phone.trim()) errors.push(`Location ${i + 1}: phone number is required`);
+          if (!loc.openingHours.trim()) errors.push(`Location ${i + 1}: opening hours are required`);
+        }
+        if (!data.enquiryEmails.trim()) errors.push("Enquiry email address(es) required");
+      }
+      break;
+
+    case 4: // Goals & homepage
+      if (!data.primaryGoal) errors.push("Primary goal is required");
+      if (data.primaryGoal === "other" && !data.primaryGoalOther.trim()) errors.push("Please specify your primary goal");
+      if (!data.topActions || data.topActions.length === 0) errors.push("Please select at least 1 top action");
+      if (!data.homepagePriorities || data.homepagePriorities.length === 0) errors.push("Please select at least 1 homepage priority");
+      break;
+
+    case 5: // Homepage wireframe
+      if (!data.wireframeApproved) errors.push("Please confirm you're happy with the homepage layout");
+      break;
+
+    case 6: // Treatments
+      if (isNewBuild) {
+        if (!data.treatments || data.treatments.length === 0) errors.push("Please select at least 1 treatment");
+        if (data.treatments?.includes("other") && !data.treatmentsOther.trim()) errors.push("Please list your other treatments");
+        if (!data.consultationProcess.trim()) errors.push("Consultation process is required");
+        if (!data.consultationFree) errors.push("Please indicate if the consultation is free");
+        if (!data.virtualConsultations) errors.push("Please indicate if you offer virtual consultations");
+        if (data.virtualConsultations === "yes") {
+          if (!data.virtualConsultationDetails?.trim()) errors.push("Virtual consultation details are required");
+          if (!data.virtualConsultationFree) errors.push("Please indicate if the virtual consultation is free");
+        }
+        if (!data.keyUSPs.trim()) errors.push("Key USPs are required");
+        if (!data.paymentOverview.trim()) errors.push("Payment/finance overview is required");
+      } else {
+        if (!data.treatmentsChanged) errors.push("Please indicate if treatments have changed");
+        if (data.treatmentsChanged === "yes" && !data.treatmentsChangedDetails?.trim()) errors.push("Please describe what's changed");
+      }
+      break;
+
+    case 7: // Sitemap
+      if (!data.sitemapApproved) errors.push("Please confirm you're happy with the sitemap");
+      break;
+
+    case 8: // Audience
+      if (!data.typicalPatient.trim()) errors.push("Typical patient description is required");
+      if (!data.topAreas.trim()) errors.push("Top areas are required");
+      break;
+
+    case 9: // Brand & design preferences
+      if (!isNewBuild && !data.logoUpdated) errors.push("Please indicate if your logo has been updated");
+      if (!data.hasBrandGuidelines) errors.push("Please indicate if you have brand guidelines");
+      if (!data.colourSchemePreference) errors.push("Colour scheme preference is required");
+      if (!data.aestheticKeywords?.trim()) errors.push("Aesthetic keywords are required");
+      if (!data.firstImpression?.trim()) errors.push("First impression is required");
+      break;
+
+    case 10: // Design styles
+      if (!data.selectedStyles || data.selectedStyles.length === 0) errors.push("Please select at least 1 design style");
+      break;
+
+    case 11: // Brand persona
+      if (!data.designChoices?.personas || data.designChoices.personas.split(",").filter(Boolean).length === 0) {
+        errors.push("Please select at least 1 brand persona");
+      }
+      break;
+
+    case 12: // Colours
+      if ((!data.selectedPalettes || data.selectedPalettes.length === 0) && (!data.customColors || data.customColors.length === 0)) {
+        errors.push("Please select at least 1 colour palette or add custom colours");
+      }
+      break;
+
+    case 13: // Content style & tone
+      if (!data.contentStyleChoice) errors.push("Please select a content writing style");
+      if (!data.toneOfVoice || data.toneOfVoice.length === 0) errors.push("Please select at least 1 tone of voice");
+      break;
+
+    case 14: // Assets
+      if (!data.hasAssets) errors.push("Please indicate if you have assets to share");
+      if (!data.hasTestimonials) errors.push("Please indicate if you have testimonials");
+      if (data.hasTestimonials === "yes" && !data.testimonialsGuidance.trim()) errors.push("Please provide testimonial guidance");
+      break;
+
+    case 15: // Summary
+      if (!data.summaryConfirmed) errors.push("Please confirm you're happy to proceed");
+      break;
+  }
+
+  return errors;
+}
 
 export default function WizardContainer() {
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState<WizardData>(initialData);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -298,11 +417,19 @@ export default function WizardContainer() {
 
   const goToStep = (step: number) => {
     if (step >= 1 && step <= TOTAL_STEPS && !shouldSkipStep(step)) {
+      setValidationErrors([]);
       setCurrentStep(step);
     }
   };
 
   const handleNext = () => {
+    const errors = validateStep(currentStep, data);
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    setValidationErrors([]);
     if (currentStep < TOTAL_STEPS) {
       let nextStep = currentStep + 1;
       while (nextStep <= TOTAL_STEPS && shouldSkipStep(nextStep)) {
@@ -313,6 +440,7 @@ export default function WizardContainer() {
   };
 
   const handlePrevious = () => {
+    setValidationErrors([]);
     if (currentStep > 1) {
       let prevStep = currentStep - 1;
       while (prevStep >= 1 && shouldSkipStep(prevStep)) {
@@ -323,6 +451,13 @@ export default function WizardContainer() {
   };
 
   const handleSubmit = () => {
+    const errors = validateStep(currentStep, data);
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    setValidationErrors([]);
     console.log("Submitting kick-off form data:", data);
     setIsSubmitted(true);
     localStorage.removeItem(STORAGE_KEY);
@@ -397,11 +532,7 @@ export default function WizardContainer() {
       case 14:
         return <AssetsContent data={data} updateData={updateData} />;
       case 15:
-        return data.isNewMember === "yes"
-          ? <NewMemberSections data={data} updateData={updateData} />
-          : <ExistingMemberSections data={data} updateData={updateData} />;
-      case 16:
-        return <Summary data={data} goToStep={goToStep} />;
+        return <Summary data={data} goToStep={goToStep} updateData={updateData} />;
       default:
         return null;
     }
@@ -411,12 +542,6 @@ export default function WizardContainer() {
   const steps = allSteps
     .filter((step) => !shouldSkipStep(step.id))
     .map((step) => {
-      if (step.id === 15) {
-        return {
-          ...step,
-          title: data.isNewMember === "yes" ? "New member" : data.isNewMember === "no" ? "Existing member" : "Your details",
-        };
-      }
       return step;
     });
 
@@ -430,6 +555,25 @@ export default function WizardContainer() {
         />
 
         <div className="mt-8 bg-white rounded-2xl shadow-lg p-6 md:p-10 border border-secondary/30">
+          {/* Validation errors */}
+          {validationErrors.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl"
+            >
+              <p className="text-sm font-medium text-red-800 mb-2">Please complete the following before continuing:</p>
+              <ul className="space-y-1">
+                {validationErrors.map((error, i) => (
+                  <li key={i} className="text-sm text-red-600 flex items-start gap-2">
+                    <span className="text-red-400 mt-0.5">•</span>
+                    {error}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}

@@ -11,8 +11,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "tio | Website Lookbook",
-  description: "Discover your website's visual identity through an interactive design brief experience. Select styles, colors, and define your brand personality.",
+  title: "Website Launchpad | Start Your Website Build | TIO International",
+  description: "Shape your website in minutes, not meetings. Work through our interactive, guided process and we'll turn your ideas into a clear, build-ready plan.",
 };
 
 export default function RootLayout({
